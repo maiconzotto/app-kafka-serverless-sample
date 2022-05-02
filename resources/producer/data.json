@@ -1,0 +1,11 @@
+{
+    "resource": "/producer",
+    "path": "/producer",
+    "body": "{ 'message': 'Hello World!' }",
+	"headers": {
+		"Content-Type": "application/json",
+		"systemId": "app-test-producer",
+		"cid": "123"
+	},
+	"httpMethod": "POST"
+}

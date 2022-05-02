@@ -1,0 +1,45 @@
+service: kafka-reference-app-serverless
+
+provider:
+  name: aws
+  region: us-east-1
+  stage: dev
+  iam:
+    role:
+      name: serverless-role
+      statements:
+        - Effect: "Allow"
+          Action:
+            - secretsmanager:GetSecretValue
+          Resource: mysasl_scram
+        - Effect: "Allow"
+          Action:
+            - kms:Decrypt
+          Resource: '*'
+
+functions:
+  producer:
+    handler: src/handler.producer
+    events:
+      - httpApi:
+          path: /producer
+          method: post
+  consumer:
+    handler: src/handler.consumer
+    events:
+      - kafka:
+          topic: mytopic
+          bootstrapServers:
+            - mybroker1
+            - mybroker2
+            - mybroker3
+          accessConfigurations:
+            vpcSubnet: 
+              - subnet-123
+              - subnet-321
+            vpcSecurityGroup:
+              - sg-123"
+            saslScram512Auth: arn:aws:secretsmanager:us-east-1:123:secret:aws-123
+          enabled: true
+          batchSize: 5
+          startingPosition: LATEST

@@ -1,0 +1,18 @@
+{
+	"eventSource": "SelfManagedKafka",
+	"bootstrapServers": "broker1:9096,broker2:9096,broker3:9096",
+	"records": {
+		"mytopic-1": [{
+			"topic": "mytopic",
+			"partition": 1,
+			"offset": 0,
+			"timestamp": 1648132805281,
+			"timestampType": "CREATE_TIME",
+			"key": "MTIz",
+			"value": "eyAnbWVzc2FnZSc6ICdIZWxsbyBXb3JsZCEnIH0=",
+			"headers": [{
+				"systemId": [98, 51, 99, 54, 99, 102, 55, 99, 45, 54, 49, 97, 48, 45, 52, 99, 48, 97, 45, 98, 53, 50, 51, 45, 50, 54, 98, 99, 100, 55, 102, 97, 101, 99, 53, 53]
+			}]
+		}]
+	}
+}
