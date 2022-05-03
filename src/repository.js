@@ -13,9 +13,6 @@ const repository = {
         console.log(JSON.stringify({ title: 'kafka insert throw', error, message: error.message, record }))
         throw error
       })
-      .finally(() => {
-        producer.disconnect()
-      })
   }
 }
 

@@ -35,30 +35,22 @@ const handler = {
   async consumer(event) {
     console.log('Event Consumer: ', JSON.stringify(event))
 
-    const topic = Object.keys(event.records)[0]
+    const records = event.records
+    var topics = Object.keys(records)
+    
+    topics.forEach(function(topicPartition) {
+        var messages = records[topicPartition]
 
-    const promises = event.records[topic]
-      .map(async (record) => {
-        const { key, value, headers, topic, partition, offset } = record
-        const { systemId } = retrieveHeaders(headers)
+        messages.forEach(function(message){
+          const { key, value, headers, topic, partition, offset } = message
+          const { systemId } = retrieveHeaders(headers)
 
-        console.log(`Successfully consumed message, SystemId: ${systemId}, Topic: ${topic}, Partition: ${partition}`)
-        console.log(`[kafka-Consumer][${systemId}] - Key : ${Buffer.from(key, 'base64').toString()}`)
-        console.log(`[kafka-Consumer][${systemId}] - Event : ${Buffer.from(value, 'base64').toString()}`)
-        console.log(`[kafka-Consumer][${systemId}] - Offset : ${offset}`)
-      })
-      .flat()
-
-    return Promise.all(promises)
-      .then((result) => {
-        return { statusCode: 200, body: JSON.stringify(result) }
-      })
-      .catch((err) => {
-        console.error('err: ', err)
-        const body = JSON.stringify(err.body ?? err.message)
-        const statusCode = err.meta?.statusCode ?? 500
-        return { statusCode, body }
-      })
+          console.log(`Successfully consumed message, SystemId: ${systemId}, Topic: ${topic}, Partition: ${partition}`)
+          console.log(`[kafka-Consumer][${systemId}] - Key : ${Buffer.from(key, 'base64').toString()}`)
+          console.log(`[kafka-Consumer][${systemId}] - Event : ${Buffer.from(value, 'base64').toString()}`)
+          console.log(`[kafka-Consumer][${systemId}] - Offset : ${offset}`)
+        })  
+    })
   }
 }
 
